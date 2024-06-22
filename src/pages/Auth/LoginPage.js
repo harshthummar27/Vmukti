@@ -102,6 +102,7 @@ function LoginPage() {
               centered
               indicatorColor="primary"
               textColor="primary"
+              sx={{ margin: "15px" }}
             >
               <Tab label="Login" value="/" />
               <Tab label="Register" value="/register" />
