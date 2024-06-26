@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://192.168.1.35:5000";
+const baseUrl = "http://192.168.1.100:5000";
 
 export const registerUser = (values, showSnackBar) => async (dispatch) => {
   dispatch({ type: "LOADING", payload: true });
@@ -8,6 +8,7 @@ export const registerUser = (values, showSnackBar) => async (dispatch) => {
   try {
     // console.log(values);
     const response = await axios.post(`${baseUrl}/api/user/signup`, values);
+    console.log(response);
     showSnackBar(response.data.message, "success");
     dispatch({ type: "LOADING", payload: false });
     setTimeout(() => {

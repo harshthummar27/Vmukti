@@ -2,10 +2,10 @@ import React from "react";
 import { Grid } from "@mui/material";
 import ViewCard from "./ViewCard";
 
-function DefaultView({ handleprop }) {
+function DefaultView({ items, handleprop, onFavoriteToggle }) {
   return (
     <Grid container spacing={8} paddingTop={6}>
-      {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, index) => (
+      {items.map((item, index) => (
         <Grid
           item
           key={index}
@@ -14,7 +14,7 @@ function DefaultView({ handleprop }) {
           md={handleprop ? 6 : 4}
           lg={handleprop ? 4 : 3}
         >
-          <ViewCard />
+          <ViewCard item={item} onFavoriteToggle={onFavoriteToggle} />
         </Grid>
       ))}
     </Grid>

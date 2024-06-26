@@ -1,115 +1,93 @@
 import React, { useState } from "react";
-import { Grid, styled, useTheme } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Typography,
+  styled,
+  useTheme,
+  Box,
+} from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 import HlsPlayer from "./HlsPlayer";
 
-const StyledCard = styled(Grid)(({ theme }) => ({
-  position: "relative",
-  textDecoration: "none",
-  maxWidth: "350px",
-  height: "auto",
-  display: "flex",
-  padding: "9px",
-  flexDirection: "column",
-  justifyContent: "flex-start",
-  alignItems: "center",
-  borderRadius: "1px",
-  boxShadow: "0 0 20px 0 rgba(0,0,0,0.1)",
-  transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+const StyledCard = styled(Card)(({ theme }) => ({
+  background: "rgba(255, 255, 255, 0.15)",
+  backdropFilter: "blur(5px)",
+  WebkitBackdropFilter: "blur(5px)",
+  border: "0.1px solid rgb(255 ,255, 255)",
+  boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.05), 0 20px 50px 0 rgba(0, 0, 0, 0.1)",
+  borderRadius: "10px",
+  overflow: "hidden",
+  padding: "10px",
+  position: "static",
+  transition: ".15s ease-in",
   "&:hover": {
-    cursor: "pointer",
-    transform: "translateY(-2px)",
-    boxShadow: "0 0 11px 0 #345F89 ", // Added hover background color
+    boxShadow: `0 0 0 2px ${theme.palette.primary.main}, 0 10px 60px 0 rgba(0, 0, 0, 0.1)`,
   },
 }));
 
-const FavouriteIcon = styled(Favorite)(({ theme }) => ({
-  color: "white",
-  fontSize: "18px", // Making the icon smaller
-}));
-
-function ViewCard() {
+function ViewCard({ item, onFavoriteToggle }) {
   const theme = useTheme();
-  const [isHovered, setIsHovered] = useState(false);
-  const [isRed, setIsRed] = useState(false); // State to track if color is red
-
-  const handleHover = () => {
-    setIsHovered(true);
-  };
-
-  const handleLeave = () => {
-    setIsHovered(false);
-  };
+  const [isRed, setIsRed] = useState(item.fav === 1);
 
   const handleClick = () => {
-    setIsRed((prev) => !prev); // Toggle the state between true and false
-    console.log("Clicked on favorite!");
+    setIsRed((prev) => !prev);
+    onFavoriteToggle(item.id);
   };
 
   return (
-    <StyledCard className="card">
-      <Grid
-        className="top"
-        sx={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: "16 / 9",
-          borderRadius: "6px",
-          overflow: "hidden",
-        }}
-      >
-        <HlsPlayer
-          src={
-            "https://media1.ambicam.com:443/dvr30/6eb06634-127d-445e-8178-8d3c1489892c/12_06_24/6eb06634-127d-445e-8178-8d3c1489892c.m3u8"
-          }
-          controls={true}
-          autoPlay={false}
-          muted={true}
-          width={"100%"}
-          height={"100%"}
-        />
-        <Grid
-          className="favourite"
+    <div style={{ width: "100%", maxWidth: "400px" }}>
+      <StyledCard>
+        <CardMedia
           sx={{
-            position: "absolute",
-            top: "8px",
-            right: "8px",
-            zIndex: "100",
-            borderRadius: "50%",
-            padding: "5px",
-            transition:
-              "background-color 0.3s ease-in-out, transform 0.3s ease-in-out",
-            "&:hover": {
-              transform: "scale(1.1)",
-            },
+            borderRadius: "5px",
+            overflow: "hidden",
           }}
-          onClick={handleClick}
-          onMouseEnter={handleHover}
-          onMouseLeave={handleLeave}
         >
-          <FavouriteIcon sx={{ color: isRed ? "red" : "white" }} />
-        </Grid>
-      </Grid>
-      <Grid className="information" sx={{ padding: "18px", width: "100%" }}>
-        <Grid className="mainInfo" sx={{ textAlign: "center" }}>
-          <Grid
-            className="Title"
+          <HlsPlayer
+            src={
+              "https://media1.ambicam.com:443/dvr30/6eb06634-127d-445e-8178-8d3c1489892c/12_06_24/6eb06634-127d-445e-8178-8d3c1489892c.m3u8"
+            }
+            controls={true}
+            autoPlay={false}
+            muted={true}
+            width={"100%"}
+            height={"100%"}
+          />
+        </CardMedia>
+        <CardContent>
+          <Box
             sx={{
-              fontSize: "16px",
-              fontWeight: "bold",
-              color: theme.palette.text.primary,
-              marginTop: "10px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              maxWidth: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            CAM 001 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </Grid>
-        </Grid>
-      </Grid>
-    </StyledCard>
+            <Typography variant="body1">{item.name}</Typography>
+            <IconButton
+              sx={{
+                border: 0,
+                borderRadius: "50%",
+                width: "1rem",
+                height: "1rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: "0.75rem",
+                transition: "0.25s ease",
+                cursor: "pointer",
+                color: isRed ? "#EC4646" : theme.palette.text.primary,
+              }}
+              onClick={handleClick}
+            >
+              <Favorite />
+            </IconButton>
+          </Box>
+        </CardContent>
+      </StyledCard>
+    </div>
   );
 }
 
