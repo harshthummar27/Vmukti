@@ -1,64 +1,57 @@
+import React, { useState } from "react";
 import {
-  Alert,
-  Button,
-  Checkbox,
-  Divider,
-  FormControlLabel,
   Grid,
+  Typography,
+  TextField,
+  Button,
   IconButton,
   InputAdornment,
   Snackbar,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { LoginUser } from "../../State/Auth/userAction"; // Correct import path to loginUser action
-import { useDispatch } from "react-redux";
-import GoogleIcon from "@mui/icons-material/Google";
-import { useNavigate } from "react-router-dom";
-import DiamondIcon from "@mui/icons-material/Diamond";
+import { forgotPassword } from "../../State/Auth/userAction";
+import Alert from "@mui/material/Alert";
 
-function LoginPage() {
+function Forgetpassword() {
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState({ severity: "", content: "" });
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [message, setMessage] = useState({ severity: "", content: "" });
-  const [snackbar, setSnackbar] = useState({ open: false });
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const new_password = formData.get("password");
 
-    const data = new FormData(event.currentTarget);
-
-    const email = data.get("email");
-    const password = data.get("password");
-    const userData = { email, password };
-    dispatch(LoginUser(userData, showSnackBar));
+    try {
+      await dispatch(forgotPassword({ email, new_password }, showSnackBar));
+    } catch (error) {
+      showSnackBar(error.response.data.message, "error");
+    }
   };
 
   const showSnackBar = (msg, severity) => {
-    setMessage({ severity: severity, content: msg });
-    setSnackbar({ open: true });
+    setMessage({ severity, content: msg });
+    setSnackbarOpen(true);
   };
 
-  const handleClose = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
-
-  const handleTabChange = (event, newValue) => {
-    navigate(newValue);
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   return (
     <Grid container className="login-main" sx={{ minHeight: "100vh" }}>
+      {/* Left section with logo */}
       <Grid
         item
         xs={false}
@@ -79,6 +72,8 @@ function LoginPage() {
           style={{ maxWidth: "400px" }}
         />
       </Grid>
+
+      {/* Right section with login form */}
       <Grid item xs={12} sm={6} className="login-right">
         <Grid
           container
@@ -95,6 +90,7 @@ function LoginPage() {
             backdropFilter: "blur(10px)",
           }}
         >
+          {/* Logo and title */}
           <Grid
             item
             className="login-log"
@@ -115,6 +111,8 @@ function LoginPage() {
               Reset Password
             </Typography>
           </Grid>
+
+          {/* Form */}
           <Grid
             item
             className="login-center"
@@ -141,36 +139,35 @@ function LoginPage() {
                   },
                 }}
               />
-              <Grid item className="pass-input" sx={{ position: "relative" }}>
-                <TextField
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  label="Password"
-                  placeholder="Enter Your Password"
-                  fullWidth
-                  required
-                  variant="standard"
-                  InputProps={{
-                    style: {
-                      marginBottom: "20px",
-                    },
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                        >
-                          {showPassword ? (
-                            <VisibilityIcon />
-                          ) : (
-                            <VisibilityOffIcon />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
+
+              <TextField
+                type={showPassword ? "text" : "password"}
+                name="password"
+                label="Password"
+                placeholder="Enter Your Password"
+                fullWidth
+                required
+                variant="standard"
+                InputProps={{
+                  style: {
+                    marginBottom: "20px",
+                  },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                      >
+                        {showPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
               <Grid
                 item
@@ -197,6 +194,8 @@ function LoginPage() {
                 </Button>
               </Grid>
             </form>
+
+            {/* Register link */}
             <Typography>
               Don't have an account?
               <Button
@@ -214,6 +213,8 @@ function LoginPage() {
               </Button>
             </Typography>
           </Grid>
+
+          {/* Snackbar for notifications */}
           <Grid
             item
             sx={{
@@ -223,9 +224,9 @@ function LoginPage() {
             }}
           >
             <Snackbar
-              open={snackbar.open}
-              autoHideDuration={1000}
-              onClose={handleClose}
+              open={snackbarOpen}
+              autoHideDuration={6000}
+              onClose={handleCloseSnackbar}
               anchorOrigin={{ vertical: "top", horizontal: "center" }}
             >
               <Alert severity={message.severity} variant="filled">
@@ -239,4 +240,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default Forgetpassword;

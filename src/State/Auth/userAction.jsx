@@ -37,6 +37,28 @@ export const LoginUser = (values, showSnackBar) => async (dispatch) => {
   }
 };
 
+
+
+export const forgotPassword = (values, showSnackBar) => async (dispatch) => {
+  dispatch({ type: "LOADING", payload: true }); // Corrected action type to uppercase
+
+  try {
+    const response = await axios.patch(
+      `${baseUrl}/api/user/forgetpassword`,
+      values
+    );
+    showSnackBar(response.data.message, "success");
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1000);
+    dispatch({ type: "LOADING", payload: false });
+  } catch (error) {
+    showSnackBar(error.response.data.error, "error");
+    dispatch({ type: "LOADING", payload: false });
+  }
+};
+
+
 export const getAllUsers = () => async (dispatch) => {
   dispatch({ type: "LOADING", payload: true });
   try {
