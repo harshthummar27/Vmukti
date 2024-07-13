@@ -102,7 +102,7 @@ function Slider({ open, setOpen }) {
     const decodetoken = jwtDecode(user);
     userEmail = decodetoken?.User?.id;
   }
-  console.log("userEmail:", userEmail);
+  // console.log("userEmail:", userEmail);
 
   const handleLogout = () => {
     localStorage.removeItem("user");

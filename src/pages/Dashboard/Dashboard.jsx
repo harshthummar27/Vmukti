@@ -49,7 +49,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Search = styled("div")(({ theme }) => ({
+const Search = styled("div")(({ theme, showSearch }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -57,10 +57,13 @@ const Search = styled("div")(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginLeft: 0,
-  width: "100%",
+  width: showSearch ? "100%" : "auto",
+  display: showSearch ? "flex" : "none",
+  alignItems: "center",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(1),
-    width: "auto",
+    width: showSearch ? "auto" : "100%",
+    display: "flex",
   },
 }));
 
@@ -111,8 +114,9 @@ const initialItems = [
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
   const [items, setItems] = useState(initialItems);
+  const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -165,18 +169,39 @@ function Dashboard() {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              Ambicam
+              CRIS
             </Typography>
 
-            <Search>
-              <SearchIconWrapper>
+            {!isMobile && (
+              <Search showSearch={true}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </Search>
+            )}
+
+            {isMobile && !showSearch && (
+              <IconButton onClick={() => setShowSearch(true)} color="inherit">
                 <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
+              </IconButton>
+            )}
+
+            {isMobile && showSearch && (
+              <Search showSearch={true}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                  onBlur={() => setShowSearch(false)}
+                />
+              </Search>
+            )}
 
             <IconButton
               size="large"
@@ -219,7 +244,10 @@ function Dashboard() {
             <Route
               path="/most_viewed"
               element={
-                <Favoutrie items={items.filter((item) => item.fav === 1)} />
+                <Favoutrie
+                  items={items.filter((item) => item.fav === 1)}
+                  onFavoriteToggle={handleFavoriteToggle}
+                />
               }
             />
           </Routes>
