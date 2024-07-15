@@ -9,8 +9,8 @@ import {
   useTheme,
   Box,
 } from "@mui/material";
-import { Favorite } from "@mui/icons-material";
 import HlsPlayer from "./HlsPlayer";
+import StarIcon from "@mui/icons-material/Star";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   background: "rgba(255, 255, 255, 0.15)",
@@ -82,7 +82,7 @@ function ViewCard({ item, onFavoriteToggle }) {
               }}
               onClick={handleClick}
             >
-              <Favorite />
+              <StarIcon />
             </IconButton>
           </Box>
         </CardContent>

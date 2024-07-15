@@ -13,12 +13,14 @@ import {
 } from "@mui/material";
 import HlsPlayer from "../Dashboard/HlsPlayer";
 import Pagination from "@mui/material/Pagination";
+import DialogBox from "./DialogBox"; // Import DialogBox component
 
 function Cameras() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [pageSize, setPageSize] = useState(40);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [selectedVideo, setSelectedVideo] = useState(null); // State for selected video URL
   const totalVideos = 200; // Total number of videos
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
@@ -111,16 +113,10 @@ function Cameras() {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, totalVideos);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     // Increment page or reset to 1 if at the end
-  //     setCurrentPage((prevPage) =>
-  //       prevPage === Math.ceil(totalVideos / pageSize) ? 1 : prevPage + 1
-  //     );
-  //   }, 20000); // 20 seconds
-
-  //   return () => clearInterval(timer);
-  // }, [currentPage, pageSize, totalVideos]);
+  // Handle click on video
+  const handleVideoClick = (videoUrl) => {
+    setSelectedVideo(videoUrl); // Set selected video URL
+  };
 
   return (
     <Box
@@ -213,6 +209,11 @@ function Cameras() {
                       margin: "0.25rem 0",
                     }),
                   }}
+                  onClick={() =>
+                    handleVideoClick(
+                      "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8"
+                    )
+                  }
                 >
                   <HlsPlayer
                     src={
@@ -260,6 +261,14 @@ function Cameras() {
         <MenuItem onClick={() => handlePlayerSelect(84)}>84</MenuItem>
         <MenuItem onClick={() => handlePlayerSelect(104)}>104</MenuItem>
       </Menu>
+
+      {/* DialogBox for displaying selected video */}
+      <DialogBox
+        open={Boolean(selectedVideo)}
+        onClose={() => setSelectedVideo(null)}
+        videoUrl={selectedVideo}
+        isDarkMode={isDarkMode}
+      />
     </Box>
   );
 }
