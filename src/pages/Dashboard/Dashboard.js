@@ -28,6 +28,8 @@ import DefaultView from "./DefaultView";
 import Favoutrie from "../Cameras/Favoutrie";
 import { Avatar, Badge, InputBase, alpha } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import AdminDashboard from "./AdminDashboard";
+import CardPage from "../CardPage";
 
 const drawerWidth = 240;
 
@@ -114,7 +116,7 @@ const initialItems = [
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
   const [items, setItems] = useState(initialItems);
   const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
@@ -223,11 +225,18 @@ function Dashboard() {
         {!isMobile && <Slider open={open} setOpen={setOpen} />}
         <Box
           component="main"
-          sx={{ flexGrow: 1, p: 3, margin: "24px 16px", padding: "3%" }}
+          sx={{
+            flexGrow: 1,
+            p: 2,
+            margin: "24px 16px",
+            paddingTop: "4%",
+            height: "100vh",
+          }}
         >
           <Routes>
+            <Route path="/" element={<AdminDashboard />} />
             <Route
-              path="/"
+              path="/home"
               element={
                 <DefaultView
                   items={items}

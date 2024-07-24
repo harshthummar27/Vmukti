@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Typography } from "@mui/material";
 import ViewCard from "../Dashboard/ViewCard";
 
-function Favoutrie({ items, onFavoriteToggle }) {
+function Favourite({ items, onFavoriteToggle }) {
   return (
     <Grid container spacing={8} paddingTop={6}>
       <Grid item xs={12}>
@@ -17,4 +17,4 @@ function Favoutrie({ items, onFavoriteToggle }) {
   );
 }
 
-export default Favoutrie;
+export default Favourite;

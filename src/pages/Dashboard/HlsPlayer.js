@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import Hls from 'hls.js';
+import React, { useEffect, useRef } from "react";
+import Hls from "hls.js";
 
 const HlsPlayer = React.forwardRef(
   ({ src, controls, autoPlay, muted, width, height }, ref) => {

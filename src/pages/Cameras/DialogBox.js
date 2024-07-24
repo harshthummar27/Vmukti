@@ -5,7 +5,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import html2canvas from "html2canvas";
-import RadioButtonChecked from "@mui/icons-material/RadioButtonChecked";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import SendIcon from "@mui/icons-material/Send";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 function DialogBox({ open, onClose, videoUrl, isDarkMode }) {
   const contentRef = useRef(null);
@@ -96,7 +100,7 @@ function DialogBox({ open, onClose, videoUrl, isDarkMode }) {
           <HlsPlayer
             ref={playerRef}
             src={videoUrl}
-            autoPlay={true}
+            autoPlay={false}
             controls={true}
             width="100%"
             height="100%"
@@ -115,6 +119,16 @@ function DialogBox({ open, onClose, videoUrl, isDarkMode }) {
             backgroundColor: isDarkMode ? "#1e1e1e" : "#fff",
           }}
         >
+          <Tooltip title={"Next"}>
+            <IconButton
+              sx={{
+                color: isDarkMode ? "#fff" : "#333",
+              }}
+            >
+              <ArrowBackIosNewIcon />
+            </IconButton>
+          </Tooltip>
+
           <Tooltip title="Take Screenshot">
             <IconButton
               onClick={handleTakeScreenshot}
@@ -136,8 +150,38 @@ function DialogBox({ open, onClose, videoUrl, isDarkMode }) {
               {isRecording ? (
                 <StopCircleIcon sx={{ color: "red" }} />
               ) : (
-                <RadioButtonChecked sx={{ color: "red" }} />
+                <RadioButtonCheckedIcon sx={{ color: "red" }} />
               )}
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={"Share"}>
+            <IconButton
+              sx={{
+                color: isDarkMode ? "#fff" : "#333",
+              }}
+            >
+              <SendIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={"Next"}>
+            <IconButton
+              sx={{
+                color: isDarkMode ? "#fff" : "#333",
+              }}
+            >
+              <ArrowForwardIosIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={"TimeLine"}>
+            <IconButton
+              sx={{
+                color: isDarkMode ? "#fff" : "#333",
+              }}
+            >
+              <TimelineIcon />
             </IconButton>
           </Tooltip>
         </Box>

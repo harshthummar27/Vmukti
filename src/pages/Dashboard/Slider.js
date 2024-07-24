@@ -25,10 +25,9 @@ import {
 import ShareIcon from "@mui/icons-material/Share";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import StarsIcon from "@mui/icons-material/Stars";
+import SpeedIcon from "@mui/icons-material/Speed";
 import { Link, useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { useSelector } from "react-redux";
-import { usersReducers } from "../../State/Auth/userReducer";
+// import jwtDecode from "jwt-decode";
 
 const drawerWidth = 240;
 
@@ -80,7 +79,8 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const menu = [
-  { name: "Home", path: "/dashboard", icon: <Home /> },
+  { name: "Home", path: "/dashboard", icon: <SpeedIcon /> },
+  { name: "Home", path: "/dashboard/Home", icon: <Home /> },
   { name: "Camera", path: "/dashboard/cameras", icon: <Videocam /> },
   { name: "Multiple", path: "/dashboard/multiple", icon: <Subscriptions /> },
   { name: "Shared Camera", path: "/dashboard/shared", icon: <ShareIcon /> },
@@ -98,10 +98,10 @@ function Slider({ open, setOpen }) {
   const user = localStorage.getItem("user");
 
   let userEmail = "";
-  if (user) {
-    const decodetoken = jwtDecode(user);
-    userEmail = decodetoken?.User?.id;
-  }
+  // if (user) {
+  //   const decodetoken = jwtDecode(user);
+  //   userEmail = decodetoken?.User?.id;
+  // }
   // console.log("userEmail:", userEmail);
 
   const handleLogout = () => {
@@ -112,14 +112,14 @@ function Slider({ open, setOpen }) {
   };
 
   return (
-    <>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={() => setOpen(false)}>
-            <ChevronLeft />
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
+    <Drawer variant="permanent" open={open}>
+      <DrawerHeader>
+        <IconButton onClick={() => setOpen(false)}>
+          <ChevronLeft />
+        </IconButton>
+      </DrawerHeader>
+      <Divider />
+      <Box sx={{ flex: 1 }}>
         <List>
           {menu.map((item) => (
             <ListItem disablePadding key={item.name}>
@@ -180,44 +180,25 @@ function Slider({ open, setOpen }) {
           ))}
         </List>
         <Divider />
-        <Box
-          sx={{
-            mx: "auto",
-            mt: 5,
-            mb: 1,
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          <Tooltip>
-            {/* <Avatar
-              {...(open && {
-                sx: { width: 100, height: 100 },
-              })}
-            >
-              {userName ? userName[0].toUpperCase() : "R"}
-            </Avatar>
-          </Tooltip>
-
-          {open && (
-            <Typography sx={{ pt: 1 }}>{userName.toUpperCase()}</Typography>
-          )}
-          {open && (
-            <Typography variant="caption" sx={{ fontSize: "12.5px" }}>
-              {email}
-            </Typography>
-          )} */}
-
-            <Avatar>R</Avatar>
-          </Tooltip>
-        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Tooltip title={userEmail}>
+          <Avatar>R</Avatar>
+        </Tooltip>
         <Tooltip title="Logout" sx={{ mt: 1 }}>
           <IconButton onClick={handleLogout}>
             <Logout />
           </IconButton>
         </Tooltip>
-      </Drawer>
-    </>
+      </Box>
+    </Drawer>
   );
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -19,8 +19,8 @@ import StarsIcon from "@mui/icons-material/Stars";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 
 function BottomNav() {
-  const [value, setValue] = React.useState(0);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [value, setValue] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
